@@ -60,10 +60,13 @@ jobs:
         run: |
           docker build -t flask-app:latest .
 
+      - name: debug
+        run: docker images
+
       - name: Run smoke test
         run: |
           docker run -d --name flask-test -p 5000:5000 flask-app:latest
-          sleep 5
+          sleep 60
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/)
           if [ "$STATUS" -ne 200 ]; then
             echo "Flask app failed to start. Status code: $STATUS"
