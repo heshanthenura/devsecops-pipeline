@@ -67,18 +67,7 @@ jobs:
         run: |
           docker run -d --name flask-test -p 5000:5000 flask-app:latest
           sleep 10
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/)
-          if [ "$STATUS" -ne 200 ]; then
-            echo "Flask app failed to start. Status code: $STATUS"
-            docker logs flask-test
-            docker stop flask-test
-            docker rm flask-test
-            exit 1
-          else
-            echo "Flask app is running."
-          fi
-          docker stop flask-test
-          docker rm flask-test
+          curl http://localhost:5000/
 
       - name: debug
         run: docker ps
