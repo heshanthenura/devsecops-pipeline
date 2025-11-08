@@ -46,7 +46,7 @@ jobs:
           args: detect --redact --exit-code=2 --verbose
 
   docker-build:
-    uns-on: ubuntu-latest
+    runs-on: ubuntu-latest
     needs: security-checks
 
     steps:
