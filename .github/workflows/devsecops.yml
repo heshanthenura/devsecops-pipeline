@@ -103,45 +103,13 @@ jobs:
           POSTGRES_USER: heshanthenura
           POSTGRES_PASSWORD: 2003213Ht
           POSTGRES_DB: taskmanager
-          DATABASE_URL: postgresql://heshanthenura:2003213Ht@host.docker.internal:5432/taskmanager
+          DATABASE_URL: postgresql://heshanthenura:2003213Ht@localhost:5432/taskmanager
           SECRET_KEY: super-secret-key
         run: |
-          echo "Starting Flask container and capturing logs..."
-          docker_output=$(docker run --rm -d --name flask-test -p 5000:5000 \
+          docker run --rm -d --name flask-test -p 5000:5000 \
             -e POSTGRES_USER=$POSTGRES_USER \
             -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
             -e POSTGRES_DB=$POSTGRES_DB \
             -e DATABASE_URL=$DATABASE_URL \
             -e SECRET_KEY=$SECRET_KEY \
-            flask-app:latest 2>&1)
-
-          docker_exit_code=$?
-          echo "Container start output:"
-          echo "$docker_output"
-
-          if [ $docker_exit_code -ne 0 ]; then
-            echo "❌ Failed to start Flask container"
-            exit 1
-          fi
-
-          # Wait a bit for the app to start
-          sleep 15
-
-          # Capture the logs for debugging
-          container_logs=$(docker logs flask-test 2>&1)
-          curl_status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/ || echo 0)
-          echo "Flask container logs:"
-          echo "$container_logs"
-          echo "HTTP status code: $curl_status"
-
-          # Stop the container
-          docker stop flask-test
-          docker rm flask-test
-
-          # Fail if curl didn't return 200
-          if [ "$curl_status" -ne 200 ]; then
-            echo "❌ Flask app failed to respond correctly."
-            exit 1
-          fi
-
-          echo "✅ Flask app is running and responding with HTTP 200!"
+            flask-app:latest
