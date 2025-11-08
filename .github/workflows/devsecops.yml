@@ -74,8 +74,29 @@ jobs:
       - name: Build Docker image
         run: docker build -t flask-app:latest .
 
-      - name: debug
-        run: docker images
+      - name: Verify PostgreSQL is running
+        run: |
+          echo "Installing PostgreSQL client tools..."
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+
+          echo "Checking PostgreSQL readiness..."
+          for i in {1..10}; do
+            if pg_isready -h localhost -p 5432 -U heshanthenura >/dev/null 2>&1; then
+              echo "✅ PostgreSQL is ready!"
+              break
+            else
+              echo "⏳ Waiting for PostgreSQL to become ready... ($i/10)"
+              sleep 5
+            fi
+          done
+
+          if ! pg_isready -h localhost -p 5432 -U heshanthenura >/dev/null 2>&1; then
+            echo "❌ PostgreSQL did not become ready in time."
+            docker ps -a
+            exit 1
+          fi
+
+          echo "✅ PostgreSQL connection verified successfully."
 
       - name: Run smoke test
         env:
