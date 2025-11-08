@@ -113,3 +113,12 @@ jobs:
             -e DATABASE_URL=$DATABASE_URL \
             -e SECRET_KEY=$SECRET_KEY \
             flask-app:latest
+
+      - name: Save image as artifact
+        run: docker save flask-app:latest -o flask-app.tar
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v4
+        with:
+          name: flask-app-image
+          path: flask-app.tar
