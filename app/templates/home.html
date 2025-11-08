@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block content %}
+<div class="card text-center">
+  <h1>
+    Welcome{{ ', ' + current_user.username if current_user.is_authenticated else '' }}!
+  </h1>
+  <p style="font-size: 18px; color: #6b7280; margin-bottom: 32px;">
+    {% if current_user.is_authenticated %}
+    Manage your tasks efficiently and stay organized
+    {% else %}
+    Get started by creating an account and organizing your tasks
+    {% endif %}
+  </p>
+  {% if current_user.is_authenticated %}
+  <a href="/tasks" class="btn">View My Tasks</a>
+  {% else %}
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+    <a href="/login" class="btn">Login</a>
+    <a href="/register" class="btn btn-secondary">Register</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

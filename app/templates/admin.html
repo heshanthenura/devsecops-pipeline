@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block content %}
+<h2>Admin Dashboard</h2>
+
+<div class="card">
+  <h3 style="margin-top: 0;">All Users & Tasks</h3>
+  <div style="overflow-x: auto;">
+    <table
+      style="
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      "
+    >
+      <thead>
+        <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+          <th
+            style="
+              padding: 12px;
+              text-align: left;
+              font-weight: 600;
+              color: #111827;
+            "
+          >
+            User
+          </th>
+          <th
+            style="
+              padding: 12px;
+              text-align: left;
+              font-weight: 600;
+              color: #111827;
+            "
+          >
+            Task Title
+          </th>
+          <th
+            style="
+              padding: 12px;
+              text-align: left;
+              font-weight: 600;
+              color: #111827;
+            "
+          >
+            Description
+          </th>
+          <th
+            style="
+              padding: 12px;
+              text-align: left;
+              font-weight: 600;
+              color: #111827;
+            "
+          >
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %} {% for task in user.tasks %}
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 12px; color: #111827; font-weight: 500;">
+            {{ user.username }}
+          </td>
+          <td style="padding: 12px; color: #374151;">{{ task.title }}</td>
+          <td style="padding: 12px; color: #6b7280;">
+            {{ task.description or '-' }}
+          </td>
+          <td style="padding: 12px;">
+            <span
+              style="
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                {% if task.status == 'Completed' %}
+                background: #d1fae5;
+                color: #065f46;
+                {% else %}
+                background: #fef3c7;
+                color: #92400e;
+                {% endif %}
+              "
+            >
+              {{ task.status }}
+            </span>
+          </td>
+        </tr>
+        {% else %}
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 12px; color: #111827; font-weight: 500;">
+            {{ user.username }}
+          </td>
+          <td colspan="3" style="padding: 12px; color: #9ca3af; font-style: italic;">
+            No tasks
+          </td>
+        </tr>
+        {% endfor %} {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

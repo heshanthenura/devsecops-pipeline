@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %}
+<div class="card" style="max-width: 400px; margin: 0 auto;">
+  <h2>Create Account</h2>
+  <p style="color: #6b7280; margin-bottom: 24px;">Sign up to start managing your tasks.</p>
+  <form method="POST">
+    <input
+      name="username"
+      placeholder="Username"
+      required
+      autocomplete="username"
+    />
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+      autocomplete="new-password"
+    />
+    <button type="submit" style="width: 100%; margin-top: 8px;">Create Account</button>
+  </form>
+  <p style="text-align: center; margin-top: 24px; color: #6b7280; font-size: 14px;">
+    Already have an account? <a href="/login">Login here</a>
+  </p>
+</div>
+{% endblock %}
